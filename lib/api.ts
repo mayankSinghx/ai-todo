@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:4000";
+// const API_URL = "http://localhost:4000";
+const API_URL = "https://ai-server-txsz.onrender.com";
+
 
 const api = axios.create({
     baseURL: API_URL,
