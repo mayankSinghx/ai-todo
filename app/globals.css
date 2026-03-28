@@ -1,26 +1,120 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /* Celestial Dusk Design System - High-End Futuristic Aesthetic */
+    --background: #0b0e14;
+    --background-gradient: radial-gradient(circle at 50% 50%, #161a21 0%, #0b0e14 100%);
+    
+    --primary: #a7a5ff;
+    --primary-dim: #645efb;
+    --primary-glow: rgba(167, 165, 255, 0.3);
+    
+    --secondary: #af88ff;
+    --secondary-dim: #8a4cfc;
+    --secondary-glow: rgba(175, 136, 255, 0.3);
+    
+    --tertiary: #69daff;
+    --tertiary-dim: #00c0ea;
+    
+    --foreground: #ecedf6;
+    --foreground-muted: #a9abb3;
+    
+    --glass-bg: rgba(22, 26, 33, 0.6);
+    --glass-border: rgba(167, 165, 255, 0.15);
+    --glass-glow: 0 0 20px rgba(167, 165, 255, 0.05);
+    
+    --card-bg: rgba(28, 32, 40, 0.8);
+    --card-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  }
+
+  @theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+    --font-display: 'Space Grotesk', sans-serif;
+  }
+
+  body {
+    background: var(--background);
+    background-image: var(--background-gradient);
+    background-attachment: fixed;
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Glassmorphism utility */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(30px) saturate(150%);
+    -webkit-backdrop-filter: blur(30px) saturate(150%);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--card-shadow), var(--glass-glow);
+  }
+
+  .glass-glow-hover {
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .glass-glow-hover:hover {
+    border-color: rgba(167, 165, 255, 0.4);
+    box-shadow: 0 0 30px rgba(167, 165, 255, 0.1), var(--card-shadow);
+    transform: translateY(-2px);
+  }
+
+  /* Gradient Text */
+  .gradient-text {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+  }
+
+  /* Glowing Button */
+  .btn-glow {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    box-shadow: 0 0 15px var(--primary-glow);
+    transition: all 0.3s ease;
+  }
+
+  .btn-glow:hover {
+    box-shadow: 0 0 25px var(--primary-glow), 0 0 10px var(--secondary-glow);
+    filter: brightness(1.1);
+    transform: scale(1.02);
+  }
+
+  .btn-glow:active {
+    transform: scale(0.98);
+  }
+
+  /* Custom Scrollbar */
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(167, 165, 255, 0.2);
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(167, 165, 255, 0.4);
+  }
+
+  /* Selection colors */
+  ::selection {
+    background: var(--primary-glow);
+    color: #fff;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+
