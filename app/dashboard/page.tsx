@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getBlogs, getPosts, deleteBlog, updateBlog, aiBlog } from "@/lib/api";
+import { getBlogs, getPosts, deleteBlog, updateBlog, aiBlog, API_URL } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     Layout,
@@ -62,7 +62,7 @@ export default function Dashboard() {
 
     const { data: catData } = useQuery({
         queryKey: ["categories"],
-        queryFn: () => fetch("http://localhost:4000/getCategories").then(res => res.json())
+        queryFn: () => fetch(`${API_URL}/getCategories`).then(res => res.json())
     });
 
     const categories = catData?.categories || [];
@@ -121,7 +121,8 @@ export default function Dashboard() {
             categoryId: blog.categoryId?.toString() || "",
             newCategory: ""
         });
-        setEditPreviews(blog.gallery.map((img: string) => `http://localhost:4000/${img}`));
+        const gallery = blog.gallery || blog.image || [];
+        setEditPreviews(gallery.map((img: string) => `${API_URL}/${img.replace(/^\//, '')}`));
         setEditImages([]);
         setIsEditModalOpen(true);
     };
@@ -191,8 +192,8 @@ export default function Dashboard() {
                         onClick={() => setActiveTab("blogs")}
                         className={cn(
                             "px-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300",
-                            activeTab === "blogs" 
-                                ? "bg-white/10 text-white shadow-xl border border-white/10" 
+                            activeTab === "blogs"
+                                ? "bg-white/10 text-white shadow-xl border border-white/10"
                                 : "text-foreground-muted hover:text-white"
                         )}
                     >
@@ -202,8 +203,8 @@ export default function Dashboard() {
                         onClick={() => setActiveTab("todos")}
                         className={cn(
                             "px-10 py-3 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all duration-300",
-                            activeTab === "todos" 
-                                ? "bg-white/10 text-white shadow-xl border border-white/10" 
+                            activeTab === "todos"
+                                ? "bg-white/10 text-white shadow-xl border border-white/10"
                                 : "text-foreground-muted hover:text-white"
                         )}
                     >
@@ -232,7 +233,7 @@ export default function Dashboard() {
                                             className="group glass rounded-[2.5rem] p-10 relative overflow-hidden border-white/5 bg-white/[0.03] hover:bg-white/[0.06] hover:border-white/10 transition-all duration-500"
                                         >
                                             <div className="absolute top-0 right-0 w-40 h-40 bg-indigo-500/10 blur-[80px] -mr-20 -mt-20 group-hover:bg-indigo-500/20 transition-all duration-500" />
-                                            
+
                                             <div className="relative z-10 h-full flex flex-col">
                                                 <div className="flex justify-between items-start mb-10">
                                                     <div className="flex items-center gap-4">

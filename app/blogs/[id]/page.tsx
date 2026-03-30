@@ -5,11 +5,11 @@ import { ArrowLeft, Clock, Calendar, User, Share2, Bookmark, Loader2 } from "luc
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getBlogById, saveBlog } from "@/lib/api";
+import { getBlogById, saveBlog, API_URL } from "@/lib/api";
 import toast from "react-hot-toast";
 import { cn } from "@/lib/utils";
 
-const API_BASE_URL = "http://localhost:4000/";
+const API_BASE_URL = API_URL.endsWith("/") ? API_URL : `${API_URL}/`;
 
 export default function BlogReader() {
     const params = useParams();
@@ -65,7 +65,7 @@ export default function BlogReader() {
         return (
             <main className="min-h-screen p-6 flex flex-col items-center justify-center gap-6">
                 <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                   <ArrowLeft className="w-8 h-8 text-foreground-muted opacity-20" />
+                    <ArrowLeft className="w-8 h-8 text-foreground-muted opacity-20" />
                 </div>
                 <h2 className="text-2xl font-black font-display text-white tracking-tight">Intelligence Node Not Found</h2>
                 <Link href="/blogs" className="text-xs font-black uppercase tracking-[0.2em] text-indigo-400 hover:text-white transition-colors underline underline-offset-8">Return to Archive</Link>
@@ -131,7 +131,7 @@ export default function BlogReader() {
                                 <div className="w-16 h-16 rounded-[1.5rem] bg-gradient-to-br from-indigo-500 to-purple-600 p-[1px] shadow-2xl">
                                     <div className="w-full h-full bg-slate-950 rounded-[1.4rem] flex items-center justify-center overflow-hidden">
                                         {blog.author?.profilePic ? (
-                                            <img src={`${API_BASE_URL}${blog.author.profilePic}`} className="w-full h-full object-cover" alt="" />
+                                            <img src={`${API_BASE_URL}${blog.author.profilePic.replace(/^\//, "")}`} className="w-full h-full object-cover" alt="" />
                                         ) : (
                                             <User className="w-6 h-6 text-white/20" />
                                         )}
@@ -173,9 +173,9 @@ export default function BlogReader() {
                         </div>
 
                         {/* Gallery */}
-                        {blog.gallery && blog.gallery.length > 0 && (
+                        {(blog.gallery || blog.image) && (blog.gallery || blog.image).length > 0 && (
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 my-24">
-                                {blog.gallery.map((imagePath: string, index: number) => (
+                                {(blog.gallery || blog.image).map((imagePath: string, index: number) => (
                                     <motion.div
                                         key={index}
                                         initial={{ opacity: 0, scale: 0.9 }}
@@ -184,7 +184,7 @@ export default function BlogReader() {
                                         className="group relative aspect-square rounded-[3rem] overflow-hidden bg-white/5 border border-white/5 shadow-2xl"
                                     >
                                         <img
-                                            src={`${API_BASE_URL}${imagePath}`}
+                                            src={`${API_BASE_URL}${imagePath.replace(/^\//, '')}`}
                                             alt={`Gallery asset ${index + 1}`}
                                             className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-125"
                                         />

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getProfile, updateProfile } from "@/lib/api";
+import { getProfile, updateProfile, API_URL } from "@/lib/api";
 import { motion } from "framer-motion";
 import {
     User,
@@ -71,8 +71,8 @@ export default function ProfilePage() {
                 gender: p.gender || "",
             });
             setSocials(p.socials || []);
-            if (p.profilePic) setProfilePicPreview(`http://localhost:4000/${p.profilePic}`);
-            if (p.bannerPic) setBannerPicPreview(`http://localhost:4000/${p.bannerPic}`);
+            if (p.profilePic) setProfilePicPreview(`${API_URL}/${p.profilePic.replace(/^\//, "")}`);
+            if (p.bannerPic) setBannerPicPreview(`${API_URL}/${p.bannerPic.replace(/^\//, "")}`);
         }
     }, [profileData]);
 
